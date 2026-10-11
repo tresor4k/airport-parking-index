@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this dataset, please cite it as below (licence CC BY 4.0: attribution to Park & Keep with a link)."
+type: dataset
+title: "Park & Keep airport parking index (Europe), 2026-10"
+version: "2026-10"
+date-released: 2026-10-11
+license: CC-BY-4.0
+url: "https://parkandkeep.com/en/data/airport-parking-index"
+repository: "https://github.com/tresor4k/airport-parking-index"
+authors:
+  - name: "Park & Keep"
+    website: "https://parkandkeep.com"
+keywords:
+  - airport parking
+  - parking prices
+  - Europe
+  - open data
+abstract: >-
+  Car parks serving 46 European airports (521 listings), with attributes and
+  public prices for 3, 7 and 14-day stays read on each operator's own website, never on an aggregator.

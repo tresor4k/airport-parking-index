@@ -1,0 +1,222 @@
+{
+  "$schema": "https://datapackage.org/profiles/2.0/datapackage.json",
+  "name": "airport-parking-index",
+  "title": "Park & Keep airport parking index (Europe)",
+  "description": "Car parks serving European airports, with their attributes and public prices for 3, 7 and 14-day stays read on each operator's own website. Airport aggregates (min / median / max) only from 3 prices.",
+  "version": "2026-10",
+  "created": "2026-10-11T21:24:35.303Z",
+  "homepage": "https://parkandkeep.com/en/data/airport-parking-index",
+  "keywords": [
+    "airport parking",
+    "parking prices",
+    "europe",
+    "open data",
+    "price index"
+  ],
+  "licenses": [
+    {
+      "name": "CC-BY-4.0",
+      "title": "Creative Commons Attribution 4.0",
+      "path": "https://creativecommons.org/licenses/by/4.0/"
+    }
+  ],
+  "contributors": [
+    {
+      "title": "Park & Keep — parkandkeep.com",
+      "path": "https://parkandkeep.com",
+      "roles": [
+        "publisher"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Websites and booking engines of each car park operator",
+      "path": "https://parkandkeep.com/en/airport-parking/how-we-rank"
+    }
+  ],
+  "resources": [
+    {
+      "name": "listings",
+      "path": "data/airport-parking-index-2026-10.csv",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "encoding": "utf-8-sig",
+      "dialect": {
+        "delimiter": ",",
+        "header": true
+      },
+      "schema": {
+        "fields": [
+          {
+            "name": "id",
+            "type": "string",
+            "description": "Stable identifier of the listing in the Park & Keep comparator.",
+            "constraints": {
+              "required": true,
+              "unique": true
+            }
+          },
+          {
+            "name": "airport_iata",
+            "type": "string",
+            "description": "IATA code of the airport the car park serves.",
+            "constraints": {
+              "required": true,
+              "pattern": "^[A-Z]{3}$"
+            }
+          },
+          {
+            "name": "airport_city",
+            "type": "string",
+            "description": "Airport name as shown on Park & Keep."
+          },
+          {
+            "name": "airport_country",
+            "type": "string",
+            "description": "ISO 3166-1 alpha-2 country code of the airport."
+          },
+          {
+            "name": "airport_vertical",
+            "type": "string",
+            "description": "Comparator section (AIRPORT = airport parking)."
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "description": "Name of the operator or car park."
+          },
+          {
+            "name": "city",
+            "type": "string",
+            "description": "Town of the car park."
+          },
+          {
+            "name": "postal_code",
+            "type": "string",
+            "description": "Postcode of the car park."
+          },
+          {
+            "name": "lat",
+            "type": "number",
+            "description": "Latitude (WGS 84)."
+          },
+          {
+            "name": "lng",
+            "type": "number",
+            "description": "Longitude (WGS 84)."
+          },
+          {
+            "name": "distance_km",
+            "type": "number",
+            "description": "Distance from the car park to the airport, in kilometres."
+          },
+          {
+            "name": "shuttle",
+            "type": "boolean",
+            "description": "Shuttle to the terminal offered (null = not stated by the operator)."
+          },
+          {
+            "name": "valet",
+            "type": "boolean",
+            "description": "Valet / meet-and-greet offered (null = not stated)."
+          },
+          {
+            "name": "covered",
+            "type": "boolean",
+            "description": "Covered or indoor parking offered (null = not stated)."
+          },
+          {
+            "name": "open_24h",
+            "type": "boolean",
+            "description": "Open or accessible 24 hours a day (null = not stated)."
+          },
+          {
+            "name": "keys_kept",
+            "type": "boolean",
+            "description": "Customer leaves the car keys with the operator (null = not stated)."
+          },
+          {
+            "name": "ev_charging",
+            "type": "boolean",
+            "description": "Electric vehicle charging available (null = not stated)."
+          },
+          {
+            "name": "online_booking",
+            "type": "boolean",
+            "description": "Online booking available (null = not stated)."
+          },
+          {
+            "name": "online_payment",
+            "type": "boolean",
+            "description": "Online payment available (null = not stated)."
+          },
+          {
+            "name": "website",
+            "type": "string",
+            "description": "Website of the operator."
+          },
+          {
+            "name": "last_verified",
+            "type": "date",
+            "description": "Date the listing (name, location, attributes) was last checked."
+          },
+          {
+            "name": "price_d3",
+            "type": "number",
+            "description": "Public price of a 3-day stay, in price.currency (null = not collected)."
+          },
+          {
+            "name": "price_d7",
+            "type": "number",
+            "description": "Public price of a 7-day stay, in price.currency (null = not collected)."
+          },
+          {
+            "name": "price_d14",
+            "type": "number",
+            "description": "Public price of a 14-day stay, in price.currency (null = not collected)."
+          },
+          {
+            "name": "price_currency",
+            "type": "string",
+            "description": "ISO 4217 currency of the prices of this listing."
+          },
+          {
+            "name": "price_source_url",
+            "type": "string",
+            "description": "Page of the operator (website or its own booking engine) where the prices were read."
+          },
+          {
+            "name": "price_checked_at",
+            "type": "date",
+            "description": "Date the price page was read (or the listing was last passed to the survey)."
+          },
+          {
+            "name": "price_stay_start",
+            "type": "string",
+            "description": "Start of the simulated stay for prices obtained as a booking quote (null for rate tables)."
+          },
+          {
+            "name": "price_method",
+            "type": "string",
+            "description": "How the prices were read: html_text:<kind> = text of the operator's rate table; quote:<engine> = quote from the operator's own booking engine; \"-\" = page checked, no usable price; null = not surveyed."
+          }
+        ],
+        "primaryKey": [
+          "id"
+        ],
+        "missingValues": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "index",
+      "path": "data/airport-parking-index-2026-10.json",
+      "format": "json",
+      "mediatype": "application/json",
+      "encoding": "utf-8",
+      "description": "Same listings nested, plus one aggregate row per airport (airports[])."
+    }
+  ]
+}
