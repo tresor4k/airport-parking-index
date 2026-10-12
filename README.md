@@ -13,17 +13,17 @@ prices for 3, 7 and 14-day stays, read on each operator's own website**. Publish
 ## In this release
 
 <!-- stats:start -->
-Snapshot **2026-10**, generated on 2026-10-11 (values computed from the JSON by `sync.mjs`):
+Snapshot **2026-10**, generated on 2026-10-12 (values computed from the JSON by `sync.mjs`):
 
 | | |
 |---|---|
 | Airports | 46 (8 countries: AT, BE, CH, DE, ES, FR, IT, NL) |
 | Car park listings | 521 |
-| Listings with at least one price | 61 |
-| Price amounts (3, 7 and 14-day stays) | 171 |
-| Airports with a 3 / 7 / 14-day aggregate (at least 3 prices) | 11 / 11 / 11 |
+| Listings with at least one price | 75 |
+| Price amounts (3, 7 and 14-day stays) | 212 |
+| Airports with a 3 / 7 / 14-day aggregate (at least 3 prices) | 13 / 13 / 13 |
 | Currencies | CHF, EUR |
-| Prices read between | 2026-10-11 and 2026-10-11 |
+| Prices read between | 2026-10-11 and 2026-10-12 |
 | Listings verified between | 2026-09-01 and 2026-09-03 |
 | Reading methods present | html_text, quote |
 <!-- stats:end -->
@@ -34,9 +34,11 @@ Snapshot **2026-10**, generated on 2026-10-11 (values computed from the JSON by 
   (`price.method` = `html_text:…`) or a quote from its own booking engine for a dated stay (`quote:<engine>`, with
   `price.stay_start`). Never on an aggregator or comparison site. `robots.txt` is respected.
 - **Traceability.** Each priced listing carries the page it was read on (`price.source_url`) and the date it was read
-  (`price.checked_at`). An amount is kept only if the amount and the stay duration appear word for word in an excerpt
-  captured from that page; amounts that fail this check, mixed currencies or non-monotonic rate tables go to manual
-  review instead of the file.
+  (`price.checked_at`). An amount read on a rates page is kept only if the amount and the stay duration appear word for
+  word in an excerpt captured from that page. For a quote, the amount appears word for word in the excerpt and the stay
+  dates and times are checked in the form as redisplayed by the site. The total is what the customer pays for that stay,
+  mandatory fees included; a total shown excluding VAT is left out, never converted. Amounts that fail these checks,
+  mixed currencies or non-monotonic rate tables go to manual review instead of the file.
 - **What is not a price.** `null` means not collected; it never means free. `price.method` = `-` means the page was
   checked and no usable price was found (prices on request, login wall, rates without a duration…).
 - **Aggregates.** Per airport and duration, min / median / max are published only when at least 3 prices exist
@@ -76,13 +78,13 @@ Read from `data/airport-parking-index-2026-10.json` (types and fill rates comput
 | `attributes.online_payment` | `online_payment` | boolean, nullable | 255 / 521 | Online payment available (null = not stated). |
 | `website` | `website` | string, nullable | 520 / 521 | Website of the operator. |
 | `last_verified` | `last_verified` | date | 521 / 521 | Date the listing (name, location, attributes) was last checked. |
-| `price.d3` | `price_d3` | number, nullable | 57 / 521 | Public price of a 3-day stay, in price.currency (null = not collected). |
-| `price.d7` | `price_d7` | number, nullable | 61 / 521 | Public price of a 7-day stay, in price.currency (null = not collected). |
-| `price.d14` | `price_d14` | number, nullable | 53 / 521 | Public price of a 14-day stay, in price.currency (null = not collected). |
+| `price.d3` | `price_d3` | number, nullable | 71 / 521 | Public price of a 3-day stay, in price.currency (null = not collected). |
+| `price.d7` | `price_d7` | number, nullable | 75 / 521 | Public price of a 7-day stay, in price.currency (null = not collected). |
+| `price.d14` | `price_d14` | number, nullable | 66 / 521 | Public price of a 14-day stay, in price.currency (null = not collected). |
 | `price.currency` | `price_currency` | string, nullable | 112 / 521 | ISO 4217 currency of the prices of this listing. |
 | `price.source_url` | `price_source_url` | string, nullable | 112 / 521 | Page of the operator (website or its own booking engine) where the prices were read. |
 | `price.checked_at` | `price_checked_at` | date, nullable | 156 / 521 | Date the price page was read (or the listing was last passed to the survey). |
-| `price.stay_start` | `price_stay_start` | datetime, nullable | 36 / 521 | Start of the simulated stay for prices obtained as a booking quote (null for rate tables). |
+| `price.stay_start` | `price_stay_start` | datetime, nullable | 51 / 521 | Start of the simulated stay for prices obtained as a booking quote (null for rate tables). |
 | `price.method` | `price_method` | string, nullable | 156 / 521 | How the prices were read: html_text:<kind> = text of the operator's rate table; quote:<engine> = quote from the operator's own booking engine; "-" = page checked, no usable price; null = not surveyed. |
 
 **`airports[]`** — one row per airport, aggregates computed over its listings (JSON only):
@@ -100,13 +102,13 @@ Read from `data/airport-parking-index-2026-10.json` (types and fill rates comput
 | `distance_km_median` | number | 46 / 46 | Median distance to the airport of the listings with a known distance, km. |
 | `distance_km_min` | number | 46 / 46 | Shortest distance to the airport among the listings, km. |
 | `prices_collected` | integer | 46 / 46 | Number of listings at this airport with at least one price. |
-| `prices.d3` | object, nullable | 11 / 46 | Aggregate of the 3-day prices (null when fewer than 3 prices). |
-| `prices.d7` | object, nullable | 11 / 46 | Aggregate of the 7-day prices (null when fewer than 3 prices). |
-| `prices.d14` | object, nullable | 11 / 46 | Aggregate of the 14-day prices (null when fewer than 3 prices). |
-| `prices.*.min` | number | 33 / 33 | Lowest price of the duration. |
-| `prices.*.median` | number | 33 / 33 | Median price of the duration. |
-| `prices.*.max` | number | 33 / 33 | Highest price of the duration. |
-| `prices.*.n` | integer | 33 / 33 | Number of prices behind the aggregate. |
+| `prices.d3` | object, nullable | 13 / 46 | Aggregate of the 3-day prices (null when fewer than 3 prices). |
+| `prices.d7` | object, nullable | 13 / 46 | Aggregate of the 7-day prices (null when fewer than 3 prices). |
+| `prices.d14` | object, nullable | 13 / 46 | Aggregate of the 14-day prices (null when fewer than 3 prices). |
+| `prices.*.min` | number | 39 / 39 | Lowest price of the duration. |
+| `prices.*.median` | number | 39 / 39 | Median price of the duration. |
+| `prices.*.max` | number | 39 / 39 | Highest price of the duration. |
+| `prices.*.n` | integer | 39 / 39 | Number of prices behind the aggregate. |
 <!-- fields:end -->
 
 ## Use and citation
@@ -128,7 +130,7 @@ Indice ouvert des parkings d'aéroport en Europe publié chaque mois par Park & 
 « Park & Keep » avec un lien vers https://parkandkeep.com/donnees/indice-parkings-aeroport).
 
 <!-- stats-fr:start -->
-Instantané **2026-10**, généré le 2026-10-11 (valeurs calculées depuis le JSON par `sync.mjs`) : 46 aéroports dans 8 pays, 521 fiches de parkings, 61 fiches avec au moins un prix, 171 montants relevés (séjours de 3, 7 et 14 jours), prix lus entre le 2026-10-11 et le 2026-10-11. Agrégats min / médiane / max publiés seulement à partir de 3 prix (3 / 7 / 14 jours : 11 / 11 / 11 aéroports).
+Instantané **2026-10**, généré le 2026-10-12 (valeurs calculées depuis le JSON par `sync.mjs`) : 46 aéroports dans 8 pays, 521 fiches de parkings, 75 fiches avec au moins un prix, 212 montants relevés (séjours de 3, 7 et 14 jours), prix lus entre le 2026-10-11 et le 2026-10-12. Agrégats min / médiane / max publiés seulement à partir de 3 prix (3 / 7 / 14 jours : 13 / 13 / 13 aéroports).
 <!-- stats-fr:end -->
 
 Méthode : chaque prix est relevé sur le site de l'exploitant lui-même (grille tarifaire ou moteur de réservation de

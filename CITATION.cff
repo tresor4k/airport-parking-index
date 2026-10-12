@@ -3,7 +3,7 @@ message: "If you use this dataset, please cite it as below (licence CC BY 4.0: a
 type: dataset
 title: "Park & Keep airport parking index (Europe), 2026-10"
 version: "2026-10"
-date-released: 2026-10-11
+date-released: 2026-10-12
 license: CC-BY-4.0
 url: "https://parkandkeep.com/en/data/airport-parking-index"
 repository: "https://github.com/tresor4k/airport-parking-index"
