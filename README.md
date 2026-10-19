@@ -109,6 +109,7 @@ Read from `data/airport-parking-index-2026-10.json` (types and fill rates comput
 | `prices.*.median` | number | 39 / 39 | Median price of the duration. |
 | `prices.*.max` | number | 39 / 39 | Highest price of the duration. |
 | `prices.*.n` | integer | 39 / 39 | Number of prices behind the aggregate. |
+| `prices.*.currency` | string | 39 / 39 | Currency of the aggregate: the currency of most priced listings at this airport; prices in another currency are left out (Geneva mixes CHF and EUR). |
 <!-- fields:end -->
 
 ## Use and citation
